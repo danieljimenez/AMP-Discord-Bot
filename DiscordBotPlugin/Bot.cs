@@ -1930,20 +1930,35 @@ namespace DiscordBotPlugin
             if (modal.Data.CustomId != "whitelist_modal")
                 return;
 
-            // Extract the Minecraft username
-            string mcName = modal.Data.Components
-                .First(c => c.CustomId == "mc_name")
-                .Value;
+            var profile = helper.GetWhitelistProfile();
 
-            // Now call your method
-            await WhitelistRequest(modal, mcName);
+            // Accept both the new shared field id and the legacy Minecraft field id
+            string playerId = modal.Data.Components
+                .FirstOrDefault(c => c.CustomId == "player_id" || c.CustomId == "mc_name")
+                ?.Value
+                ?.Trim();
 
-            // Respond to modal
-            await modal.RespondAsync($"Whitelist request submitted for **{mcName}**!", ephemeral: true);
+            if (string.IsNullOrWhiteSpace(playerId))
+            {
+                await modal.RespondAsync($"Please enter a {profile.PlayerIdLabel}.", ephemeral: true);
+                return;
+            }
+
+            if (profile.RequiresSteam64 && !helper.IsValidSteam64(playerId))
+            {
+                await modal.RespondAsync("Enter a valid 17-digit Steam64 ID (starts with 7656119).", ephemeral: true);
+                return;
+            }
+
+            await WhitelistRequest(modal, playerId, profile);
+
+            await modal.RespondAsync($"Whitelist request submitted for **{playerId}**!", ephemeral: true);
         }
 
-        public async Task WhitelistRequest(SocketModal modal, string mcName)
+        public async Task WhitelistRequest(SocketModal modal, string playerId, Helpers.WhitelistProfile? profile = null)
         {
+            profile ??= helper.GetWhitelistProfile();
+
             // Safety check: Make sure the channel exists
             if (settings.MainSettings.WhitelistRequestChannel == "")
             {
@@ -1985,25 +2000,25 @@ namespace DiscordBotPlugin
 
             // --- Build the embed ---
             var embed = new EmbedBuilder()
-                .WithTitle("Minecraft Whitelist Request")
+                .WithTitle(profile.RequestTitle)
                 .WithColor(Color.Blue)
                 .AddField("Discord User", modal.User.Mention, true)
-                .AddField("Minecraft Username", mcName, true)
+                .AddField(profile.PlayerIdLabel, playerId, true)
                 .AddField("Server", settings?.MainSettings?.ServerDisplayName, true)
                 .WithTimestamp(DateTimeOffset.UtcNow)
                 .Build();
 
             // --- Buttons ---
-            // Encode the user + mcName + server into the button ID
+            // Encode the user + playerId + server into the button ID
             var components = new ComponentBuilder()
-                .WithButton("Approve", $"wl_approve:{modal.User.Id}:{mcName}:{serverName}", ButtonStyle.Success)
-                .WithButton("Deny", $"wl_deny:{modal.User.Id}:{mcName}:{serverName}", ButtonStyle.Danger)
+                .WithButton("Approve", $"wl_approve:{modal.User.Id}:{playerId}:{serverName}", ButtonStyle.Success)
+                .WithButton("Deny", $"wl_deny:{modal.User.Id}:{playerId}:{serverName}", ButtonStyle.Danger)
                 .Build();
 
             // Post to the request channel
             await channel.SendMessageAsync(embed: embed, components: components);
 
-            log.Info($"Whitelist request created for {modal.User.Username} ({mcName}) on server {serverName}.");
+            log.Info($"Whitelist request created for {modal.User.Username} ({playerId}) on server {serverName}.");
         }
     }
 }

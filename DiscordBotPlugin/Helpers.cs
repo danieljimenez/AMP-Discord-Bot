@@ -458,5 +458,73 @@ namespace DiscordBotPlugin
                 }
             }
         }
+
+        /// <summary>
+        /// Game-specific whitelist request metadata (command defaults and Discord UI labels).
+        /// </summary>
+        public class WhitelistProfile
+        {
+            public string RequestTitle { get; set; }
+            public string PlayerIdLabel { get; set; }
+            public string PlayerIdPlaceholder { get; set; }
+            public string DefaultCommand { get; set; }
+            public bool RequiresSteam64 { get; set; }
+        }
+
+        public bool IsProjectZomboid()
+        {
+            return string.Equals(application?.ApplicationName, "Project Zomboid", StringComparison.OrdinalIgnoreCase);
+        }
+
+        public WhitelistProfile GetWhitelistProfile()
+        {
+            if (IsProjectZomboid())
+            {
+                return new WhitelistProfile
+                {
+                    RequestTitle = "Project Zomboid Whitelist Request",
+                    PlayerIdLabel = "Steam ID",
+                    PlayerIdPlaceholder = "7656119...",
+                    DefaultCommand = "addsteamid",
+                    RequiresSteam64 = true
+                };
+            }
+
+            return new WhitelistProfile
+            {
+                RequestTitle = "Minecraft Whitelist Request",
+                PlayerIdLabel = "Minecraft Username",
+                PlayerIdPlaceholder = "Your MC username",
+                DefaultCommand = "whitelist add",
+                RequiresSteam64 = false
+            };
+        }
+
+        public string GetWhitelistConsoleCommand(string playerId)
+        {
+            string commandPrefix = settings?.MainSettings?.CustomWhitelistCommand;
+            if (string.IsNullOrWhiteSpace(commandPrefix))
+            {
+                commandPrefix = GetWhitelistProfile().DefaultCommand;
+            }
+
+            return $"{commandPrefix.Trim()} {playerId}".Trim();
+        }
+
+        /// <summary>
+        /// Validates a Steam64 account ID (17 digits starting with 7656119).
+        /// </summary>
+        public bool IsValidSteam64(string steamId)
+        {
+            if (string.IsNullOrWhiteSpace(steamId))
+            {
+                return false;
+            }
+
+            steamId = steamId.Trim();
+            return steamId.Length == 17
+                && steamId.StartsWith("7656119", StringComparison.Ordinal)
+                && steamId.All(char.IsDigit);
+        }
     }
 }

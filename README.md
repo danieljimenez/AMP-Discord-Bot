@@ -135,7 +135,7 @@ Before the plugin can be used you need to configure AMP in a specific way.  **NO
 |Display Update Button|Toggle the update button on the info panel|
 |Display Manage Button|Toggle the manage button on the info panel|
 |Display Backup Button|Toggle the backup button on the info panel|
-|Display Whitelist Request Button|Toggle the whitelist request button on the info panel|
+|Display Whitelist Request Button|Toggle the whitelist request button on the info panel (Minecraft and Project Zomboid)|
 |Display Online Player List|Show a list of online players in the info panel (if supported)|
 |Change Displayed Status|Change default AMP status text to custom (see [here](https://github.com/winglessraven/AMP-Discord-Bot/wiki/Changing-Application-State-Values-to-Custom-Text))|
 |Online Server Bot Presence Text|Change the presence text when the application is running.  Use `{OnlinePlayers}` and `{MaximumPlayers}` as variables. Custom variables can also be used - to do this create a 'BotVariables.json' file in the instance folder. Variable name is the key, result is the value, e.g. {test} would return the test value in `"test": "result"`|
@@ -152,7 +152,7 @@ Before the plugin can be used you need to configure AMP in a specific way.  **NO
 |Exclude Console Output|Text to exclude from console output, useful for removing spammy messages. Use * for wildcard, e.g. \*message to ignore\*|
 |Whitelist Request Channel|Discord channel name (or ID) to send whitelist requests to (if enabled)|
 |Whitelist Approval Role|Discord role that is allowed to approve whitelist requests|
-|Custom Whitelist Command|Custom whitelist command, if blank will use default `/whitelist add`. Enter without `/` (e.g. `globalwhitelist add`)|
+|Custom Whitelist Command|Custom whitelist command; if blank uses the game default (`whitelist add` for Minecraft, `addsteamid` for Project Zomboid). Enter without `/` (e.g. `globalwhitelist add`)|
 |Enable Web Panel|Enable the web panel. This will create a html file in a similar format to the Discord info panel for website embeds. Additional steps are required to map the html file to make it accessible. See the [Wiki](https://github.com/winglessraven/AMP-Discord-Bot/wiki/Configure-the-Web-Panel)|
 |Commmands Tab Options|Enable/Disable specific commands, regardless of roles|
 
@@ -166,11 +166,13 @@ The `Discord Bot Game Specific` section is for game specific settings. These wil
 | ------------- | ------------------------------ |
 |Valheim Join Code|Keep track of the Valheim join code in the console output and add it to the info panel accordingly|
 
-## Whitelist Request Process (for Minecraft)
+## Whitelist Request Process (Minecraft and Project Zomboid)
 Enable *Display Whitelist Request Button*
 Set Whitelist Request Channel (the channel to send whitelist requests to for approval)
 Set the Whitelist Approval Role (roles that can approve whitelist requests)
-If required, add custom whitelist command (if not default `/whitelist add [playername]`)
+If required, add a custom whitelist command (defaults: Minecraft `whitelist add [playername]`, Project Zomboid `addsteamid [Steam64 ID]`)
+
+Minecraft prompts for a username; Project Zomboid prompts for a 17-digit Steam64 ID (validated before the request is posted).
 
 User requests access...
 
