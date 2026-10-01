@@ -243,37 +243,39 @@ namespace DiscordBotPlugin
         [Serializable]
         public class DiscordBotCommandOptions : SettingSectionStore
         {
-            [WebSetting("Info", "Enable /info command", false, Subcategory: "Commands:terminal:8")]
+            private const string DisabledHint = " When disabled, the command is removed from Discord (client may take a moment to refresh).";
+
+            [WebSetting("Info", "Enable /info command." + DisabledHint, false, Subcategory: "Commands:terminal:8")]
             public bool EnableInfo = true;
 
-            [WebSetting("Start Server", "Enable /start-server command", false, Subcategory: "Commands:terminal:8")]
+            [WebSetting("Start Server", "Enable /start-server command." + DisabledHint, false, Subcategory: "Commands:terminal:8")]
             public bool EnableStartServer = true;
 
-            [WebSetting("Stop Server", "Enable /stop-server command", false, Subcategory: "Commands:terminal:8")]
+            [WebSetting("Stop Server", "Enable /stop-server command." + DisabledHint, false, Subcategory: "Commands:terminal:8")]
             public bool EnableStopServer = true;
 
-            [WebSetting("Restart Server", "Enable /restart-server command", false, Subcategory: "Commands:terminal:8")]
+            [WebSetting("Restart Server", "Enable /restart-server command." + DisabledHint, false, Subcategory: "Commands:terminal:8")]
             public bool EnableRestartServer = true;
 
-            [WebSetting("Kill Server", "Enable /kill-server command", false, Subcategory: "Commands:terminal:8")]
+            [WebSetting("Kill Server", "Enable /kill-server command." + DisabledHint, false, Subcategory: "Commands:terminal:8")]
             public bool EnableKillServer = true;
 
-            [WebSetting("Update Server", "Enable /update-server command", false, Subcategory: "Commands:terminal:8")]
+            [WebSetting("Update Server", "Enable /update-server command." + DisabledHint, false, Subcategory: "Commands:terminal:8")]
             public bool EnableUpdateServer = true;
 
-            [WebSetting("Show Playtime", "Enable /show-playtime command", false, Subcategory: "Commands:terminal:8")]
+            [WebSetting("Show Playtime", "Enable /show-playtime command." + DisabledHint, false, Subcategory: "Commands:terminal:8")]
             public bool EnableShowPlaytime = true;
 
-            [WebSetting("Console", "Enable /console command", false, Subcategory: "Commands:terminal:8")]
+            [WebSetting("Console", "Enable /console command." + DisabledHint, false, Subcategory: "Commands:terminal:8")]
             public bool EnableConsole = true;
 
-            [WebSetting("Full Playtime List", "Enable /full-playtime-list command", false, Subcategory: "Commands:terminal:8")]
+            [WebSetting("Full Playtime List", "Enable /full-playtime-list command." + DisabledHint, false, Subcategory: "Commands:terminal:8")]
             public bool EnableFullPlaytimeList = true;
 
-            [WebSetting("Take Backup", "Enable /take-backup command", false, Subcategory: "Commands:terminal:8")]
+            [WebSetting("Take Backup", "Enable /take-backup command." + DisabledHint, false, Subcategory: "Commands:terminal:8")]
             public bool EnableTakeBackup = true;
 
-            [WebSetting("Remove Playtime", "Enable /remove-playtime command", false, Subcategory: "Commands:terminal:8")]
+            [WebSetting("Remove Playtime", "Enable /remove-playtime command." + DisabledHint, false, Subcategory: "Commands:terminal:8")]
             public bool EnableRemovePlaytime = true;
         }
 

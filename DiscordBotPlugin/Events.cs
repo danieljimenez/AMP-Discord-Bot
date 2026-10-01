@@ -219,6 +219,11 @@ namespace DiscordBotPlugin
                             hasSimpleUserList.UserLeaves += UserLeaves;
                         }
                     }
+                    else if (bot.client.ConnectionState == ConnectionState.Connected)
+                    {
+                        // Refresh slash commands if command enablement / RemoveBotName changed.
+                        _ = bot.RegisterSlashCommandsAsync();
+                    }
                 }
                 catch (Exception exception)
                 {
@@ -243,6 +248,8 @@ namespace DiscordBotPlugin
                     {
                         log.Error($"Error logging out from Discord: {exception.Message}");
                     }
+
+                    bot.ResetSlashCommandRegistrationState();
                 }
 
                 log.MessageLogged -= Log_MessageLogged;
