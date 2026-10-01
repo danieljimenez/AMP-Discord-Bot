@@ -9,7 +9,6 @@ namespace DiscordBotPlugin
     public class Settings : SettingStore
     {
         [Description("Discord Bot:smart_toy")]
-        [SettingsGroupName("Discord Bot")]
         [Serializable]
         public class DiscordBotSettings : SettingSectionStore
         {
@@ -97,7 +96,7 @@ namespace DiscordBotPlugin
             [WebSetting("Display Backup Button", "Toggle the backup button visibility on the info panel", false, Subcategory: "Buttons:radio_button_checked:3")]
             public bool ShowBackupButton = false;
 
-            [WebSetting("Display Whitelist Request Button", "Toggle the whitelist request button visibility on the info panel (will only work for Minecraft instances)", false, Subcategory: "Buttons:radio_button_checked:3")]
+            [WebSetting("Display Whitelist Request Button", "Toggle the whitelist request button visibility on the info panel (supports Minecraft and Project Zomboid instances)", false, Subcategory: "Buttons:radio_button_checked:3")]
             public bool ShowWhitelistButton = false;
 
             [WebSetting("Display Whitelist Request Button On Buttonless Panel", "Include the whitelist request button on buttonless panels", false, Subcategory: "Buttons:radio_button_checked:3")]
@@ -156,7 +155,7 @@ namespace DiscordBotPlugin
             [WebSetting("Whitelist Approval Role", "Discord role that is allowed to approve whitelist requests", false, Subcategory: "Logging:output:4")]
             public string WhitelistApprovalRole = "";
 
-            [WebSetting("Custom Whitelist Command", "Custom whitelist command, if blank will use default `/whitelist add`. Enter without / (e.g. `globalwhitelist add`)", false, Subcategory: "Logging:output:4")]
+            [WebSetting("Custom Whitelist Command", "Custom whitelist command, if blank uses the game default (`whitelist add` for Minecraft, `addsteamid` for Project Zomboid). Enter without / (e.g. `globalwhitelist add`)", false, Subcategory: "Logging:output:4")]
             public string CustomWhitelistCommand = "";
 
             [WebSetting("Discord Debug Mode", "Enable verbose logging on the Discord bot for debugging", false, Subcategory: "Discord Config:settings:1")]
@@ -175,7 +174,6 @@ namespace DiscordBotPlugin
         public DiscordBotSettings MainSettings = new DiscordBotSettings();
 
         [Description("Discord Bot:smart_toy")]
-        [SettingsGroupName("Discord Bot")]
         [Serializable]
         public class DiscordBotColoursSettings : SettingSectionStore
         {
@@ -216,7 +214,6 @@ namespace DiscordBotPlugin
         public DiscordBotColoursSettings ColourSettings = new DiscordBotColoursSettings();
 
         [Description("Discord Bot:smart_toy")]
-        [SettingsGroupName("Discord Bot")]
         [Serializable]
         public class DiscordBotGameSpecificSettings : SettingSectionStore
         {
@@ -227,7 +224,6 @@ namespace DiscordBotPlugin
         public DiscordBotGameSpecificSettings GameSpecificSettings = new DiscordBotGameSpecificSettings();
 
         [Description("Discord Bot:smart_toy")]
-        [SettingsGroupName("Discord Bot")]
         [Serializable]
         public class DiscordBotAboutSettings : SettingSectionStore
         {
@@ -244,7 +240,6 @@ namespace DiscordBotPlugin
         public DiscordBotAboutSettings AboutSettings = new DiscordBotAboutSettings();
 
         [Description("Discord Bot:smart_toy")]
-        [SettingsGroupName("Discord Bot")]
         [Serializable]
         public class DiscordBotCommandOptions : SettingSectionStore
         {
